@@ -1,15 +1,16 @@
-CREATE DATABASE IF NOT EXISTS chedraui;
+DROP DATABASE IF EXISTS chedraui;
+CREATE DATABASE chedraui;
 USE chedraui;
 
 CREATE TABLE Proveedor (
     idProveedor INT PRIMARY KEY,
     Nombre VARCHAR(100),
-    Telefono VARCHAR(15),
+    Telefono VARCHAR(20),
     Direccion VARCHAR(200)
 );
 
 CREATE TABLE Articulo (
-    idArticulo INT PRIMARY KEY,
+    idArticulo BIGINT PRIMARY KEY,
     Nombre VARCHAR(100),
     Precio DECIMAL(10,2),
     Stock INT
@@ -17,7 +18,7 @@ CREATE TABLE Articulo (
 
 CREATE TABLE Detalle_proveedor (
     Proveedor_idProveedor INT,
-    Producto_idProducto INT,
+    Producto_idProducto BIGINT,
     Cantidad INT,
     PRIMARY KEY (Proveedor_idProveedor, Producto_idProducto),
     FOREIGN KEY (Proveedor_idProveedor) REFERENCES Proveedor(idProveedor),
@@ -28,7 +29,7 @@ CREATE TABLE Empleados (
     idEmpleado INT PRIMARY KEY,
     Nombre VARCHAR(100),
     Sueldo DECIMAL(10,2),
-    Telefono VARCHAR(15),
+    Telefono VARCHAR(20),
     Puesto VARCHAR(50)
 );
 
@@ -64,21 +65,19 @@ CREATE TABLE Venta (
 );
 
 CREATE TABLE Detalle_venta (
-    idDetalle_venta INT PRIMARY KEY AUTO_INCREMENT,
     Venta_idVenta INT,
-    Articulo_idArticulo INT,
+    Detalle_venta INT,
     precio_unitario DECIMAL(10,2),
     cantidad INT,
     total DECIMAL(10,2),
-    FOREIGN KEY (Venta_idVenta) REFERENCES Venta(idVenta),
-    FOREIGN KEY (Articulo_idArticulo) REFERENCES Articulo(idArticulo)
+    PRIMARY KEY (Venta_idVenta, Detalle_venta),
+    FOREIGN KEY (Venta_idVenta) REFERENCES Venta(idVenta)
 );
-
 INSERT INTO Proveedor (idProveedor, Nombre, Telefono, Direccion) VALUES
-(100, 'Grupo Lala', '5551234567', 'Calle central oriente #100, Tuxtla Gutierrez'),
-(101, 'Bimbo S.A.', '5559876543', 'Calle 9 sur #45, Tuxtla Gutierrez'),
-(102, 'Coca-Cola FEMSA', '5551122334', 'Av. Central poniente #200, Tuxtla Gutierrez'),
-(103, 'Alpura', '5553344556', 'Av. Central #101, Tuxtla Gutierrez');
+(100, 'Grupo Lala', '5551234567', 'Calle central oriente #100, Tuxtla Gutiérrez'),
+(101, 'Bimbo S.A.', '5559876543', 'Calle 9 sur #45, Tuxtla Gutiérrez'),
+(102, 'Coca-Cola FEMSA', '5551122334', 'Av. Central poniente #200, Tuxtla Gutiérrez'),
+(103, 'Alpura', '5553344556', 'Av. Central #101, Tuxtla Gutiérrez');
 
 INSERT INTO Articulo (idArticulo, Nombre, Precio, Stock) VALUES
 (7501020526066, 'Leche Lala 1L', 25.00, 300),
@@ -91,14 +90,14 @@ INSERT INTO Articulo (idArticulo, Nombre, Precio, Stock) VALUES
 (7501026005381, 'Jabón Zote Blanco', 12.00, 250);
 
 INSERT INTO Detalle_proveedor (Proveedor_idProveedor, Producto_idProducto, Cantidad) VALUES
-(100, 200, 500),
-(101, 201, 300),
-(102, 202, 400),
-(100, 203, 250),
-(101, 204, 200),
-(100, 205, 180),
-(103, 206, 100),
-(103, 207, 300);
+(100, 7501020526066, 500),
+(101, 7501000122332, 300),
+(102, 7894900027013, 400),
+(100, 7501071301452, 250),
+(101, 7501379120137, 200),
+(100, 8422410000722, 180),
+(103, 8411030015469, 100),
+(103, 7501026005381, 300);
 
 INSERT INTO Empleados (idEmpleado, Nombre, Sueldo, Telefono, Puesto) VALUES
 (300, 'Carlos Méndez', 8500.00, '9612345678', 'Cajero'),
@@ -121,19 +120,19 @@ INSERT INTO cliente_general (idcliente_general, fecha) VALUES
 (500, '2025-05-10'),
 (501, '2025-05-11');
 
-INSERT INTO Venta (idVenta, fecha, total, metodo_de_pago, Cliente_idCliente1 ,  cliente_general_idcliente_general, Empleados_idEmpleado) VALUES
+INSERT INTO Venta (idVenta, fecha, total, metodo_de_pago, Cliente_idCliente1, cliente_general_idcliente_general, Empleados_idEmpleado) VALUES
 (600, '2025-05-12', 55.00, 'Efectivo', 400, NULL, 300),
 (601, '2025-05-12', 60.00, 'Tarjeta', 401, NULL, 301),
 (602, '2025-05-13', 28.00, NULL, NULL, 500, 302),
 (603, '2025-05-13', 90.00, 'Transferencia', 402, NULL, 303);
 
-INSERT INTO Detalle_venta (Venta_idVenta, Articulo_idArticulo, precio_unitario, cantidad, total) VALUES
-(600, 200, 25.00, 1, 25.00),
-(600, 201, 30.00, 1, 30.00),
-(601, 202, 28.00, 2, 56.00),
-(601, 207, 4.00, 1, 4.00),
-(602, 202, 28.00, 1, 28.00),
-(603, 201, 30.00, 1, 30.00),
-(603, 203, 22.50, 2, 45.00),
-(603, 204, 15.00, 1, 15.00);
+INSERT INTO Detalle_venta (Venta_idVenta, Detalle_venta, precio_unitario, cantidad, total) VALUES
+(600, 700, 25.00, 1, 25.00),
+(600, 701, 30.00, 1, 30.00),
+(601, 702, 28.00, 2, 56.00),
+(601, 703, 4.00, 1, 4.00),
+(602, 704, 28.00, 1, 28.00),
+(603, 705, 30.00, 1, 30.00),
+(603, 706, 22.50, 2, 45.00),
+(603, 707, 15.00, 1, 15.00);
 
